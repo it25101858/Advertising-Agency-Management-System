@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="navbar" class="top-header">
+    <div style="font-weight:600; color:var(--text-secondary);">
+        Welcome back, <span id="userDisplayName" style="color:#fff; font-weight:700;">Admin</span> (<span id="userDisplayRole" style="color:var(--accent-teal);">STAFF</span>)
+    </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+        <a th:href="@{/users/profile}" class="btn-secondary" style="padding:6px 14px; font-size:0.85rem;">👤 Profile</a>
+        <button id="btnLogout" class="btn-secondary" style="padding:6px 14px; font-size:0.85rem; border-color:rgba(239,71,111,0.4); color:var(--accent-rose);">🚪 Logout</button>
+    </div>
+</header>
+</body>
+</html>

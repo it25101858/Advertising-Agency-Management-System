@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Feedback & Review â€¢ Yashika J. (AdFlow)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        .filter-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+        .validation-alert {
+            display: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 32px;
+            padding-bottom: 24px;
+            border-left: 2px solid var(--border-glass);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px; top: 0;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+        }
+        .star-rating {
+            font-size: 1.5rem;
+            color: #f59e0b;
+            cursor: pointer;
+        }
+        .star-rating span {
+            transition: color 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand" onclick="goToHomePage()" style="cursor: pointer;" title="Go to Home Page">
+            <div class="logo-badge">AdFlow</div>
+            <div class="brand-text">
+                <h1>BrightWave Advertising</h1>
+                <p>Client Feedback & Creative Review System</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/" class="btn btn-outline-light btn-sm">â† Back to Main System</a>
+        </div>
+    </header>
+
+    <div class="container-fluid p-4">
+        
+        <!-- Validation / Status Notification Banner -->
+        <div id="alertBanner" class="alert alert-danger validation-alert alert-dismissible fade show" role="alert">
+            <span id="alertMessage">Validation Error Message</span>
+            <button type="button" class="btn-close" onclick="hideAlert()"></button>
+        </div>
+
+        <div class="page-header d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>ðŸ’¬ Client Feedback & Revision History</h2>
+                <p class="text-secondary mb-0">Read-only agency view of client feedback, ratings, revision requests, approval decisions, and feedback history.</p>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Filter Campaign</label>
+                    <select id="filterCampaign" class="form-select bg-dark text-light border-secondary" onchange="loadTimeline()">
+                        <option value="ALL">All Campaigns</option>
+                        <option value="1">5G Mega Launch 2026</option>
+                        <option value="2">Avurudu Festive Promo</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Filter Resolution Status</label>
+                    <select id="filterStatus" class="form-select bg-dark text-light border-secondary" onchange="loadTimeline()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="SUBMITTED">Submitted</option>
+                        <option value="ADDRESSED">Addressed</option>
+                        <option value="RESOLVED">Resolved</option>
+                        <option value="APPROVED">Approved</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button class="btn btn-outline-secondary w-100 mt-4" onclick="resetFilters()">Reset Timeline Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Timeline Display -->
+        <div class="table-container">
+            <div id="timelineContainer">
+                <!-- Timeline items loaded dynamically by feedback-app.js -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/feedback-app.js"></script>
+</body>
+</html>

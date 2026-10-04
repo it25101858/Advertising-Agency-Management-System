@@ -1,0 +1,144 @@
+/* ============================================================================
+   AdFlow - Design System Variables
+   Electric Blue + Obsidian Black + Pure White
+   BrightWave Advertising (Pvt) Ltd
+   ============================================================================ */
+
+:root {
+    /* ── Primary Palette ────────────────────────────────────────────────── */
+    --blue-electric:     #2563EB;
+    --blue-cyan:         #38BDF8;
+    --blue-dark:         #1D4ED8;
+    --blue-mid:          #3B82F6;
+    --blue-soft:         #EFF6FF;
+    --blue-light-bg:     #F0F9FF;
+    --blue-100:          #DBEAFE;
+    --blue-200:          #BFDBFE;
+
+    --black-obsidian:    #0B0F19;
+    --black-slate:       #0F172A;
+    --black-card:        #141B2D;
+    --black-border:      #1E293B;
+    --pure-white:        #FFFFFF;
+
+    /* ── Semantic Aliases ───────────────────────────────────────────────── */
+    --accent-blue:       var(--blue-electric);
+    --accent-purple:     #8B5CF6;
+    --accent-pink:       #EC4899;
+    --accent-cyan:       var(--blue-cyan);
+    --accent-green:      #10B981;
+    --accent-amber:      #F59E0B;
+    --accent-red:        #EF4444;
+    --accent-orange:     #F97316;
+
+    /* ── Typography ─────────────────────────────────────────────────────── */
+    --text-primary:      #0F172A;
+    --text-secondary:    #475569;
+    --text-muted:        #94A3B8;
+    --text-inverse:      #FFFFFF;
+    --text-blue:         #2563EB;
+    --text-link:         #2563EB;
+
+    /* ── Borders ────────────────────────────────────────────────────────── */
+    --border-color:      #E2E8F0;
+    --border-blue:       #BFDBFE;
+    --border-input:      #CBD5E1;
+    --border-focus:      #2563EB;
+    --border-dark:       #1E293B;
+    --border-glow:       rgba(37,99,235,0.3);
+
+    /* ── Status Badge Tokens ────────────────────────────────────────────── */
+    --badge-blue-bg:     #EFF6FF;
+    --badge-blue-border: #BFDBFE;
+    --badge-blue-text:   #2563EB;
+
+    --badge-green-bg:    #DCFCE7;
+    --badge-green-border:#BBF7D0;
+    --badge-green-text:  #15803D;
+
+    --badge-amber-bg:    #FEF3C7;
+    --badge-amber-border:#FDE68A;
+    --badge-amber-text:  #92400E;
+
+    --badge-red-bg:      #FEE2E2;
+    --badge-red-border:  #FECACA;
+    --badge-red-text:    #991B1B;
+
+    --badge-purple-bg:   #F3E8FF;
+    --badge-purple-border:#DDD6FE;
+    --badge-purple-text: #6D28D9;
+
+    --badge-gray-bg:     #F1F5F9;
+    --badge-gray-border: #E2E8F0;
+    --badge-gray-text:   #475569;
+
+    /* ── Backgrounds ────────────────────────────────────────────────────── */
+    --bg-page:           #F8FAFC;
+    --bg-card:           #FFFFFF;
+    --bg-card-hover:     #F0F9FF;
+    --bg-sidebar:        #0B0F19;
+    --bg-header:         #FFFFFF;
+    --bg-input:          #FFFFFF;
+
+    /* ── Shadows ────────────────────────────────────────────────────────── */
+    --shadow-xs:         0 1px 3px rgba(0,0,0,0.06);
+    --shadow-sm:         0 2px 8px rgba(37,99,235,0.06);
+    --shadow-subtle:     0 4px 16px rgba(37,99,235,0.08), 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-elevated:   0 16px 32px -5px rgba(37,99,235,0.18), 0 8px 10px -6px rgba(0,0,0,0.04);
+    --shadow-blue:       0 4px 14px rgba(37,99,235,0.35);
+    --shadow-blue-lg:    0 8px 28px rgba(37,99,235,0.45);
+    --shadow-dark:       0 4px 20px rgba(0,0,0,0.3);
+
+    /* ── Border Radius ──────────────────────────────────────────────────── */
+    --radius-xs:         4px;
+    --radius-sm:         6px;
+    --radius-md:         8px;
+    --radius-lg:         12px;
+    --radius-xl:         16px;
+    --radius-2xl:        20px;
+    --radius-full:       9999px;
+
+    /* ── Spacing Scale ──────────────────────────────────────────────────── */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  20px;
+    --space-6:  24px;
+    --space-8:  32px;
+    --space-10: 40px;
+    --space-12: 48px;
+
+    /* ── Typography Scale ───────────────────────────────────────────────── */
+    --font-main:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+    --text-xs:      0.72rem;
+    --text-sm:      0.82rem;
+    --text-base:    0.9rem;
+    --text-md:      1rem;
+    --text-lg:      1.125rem;
+    --text-xl:      1.25rem;
+    --text-2xl:     1.5rem;
+    --text-3xl:     1.875rem;
+    --text-4xl:     2.25rem;
+
+    /* ── Transitions ────────────────────────────────────────────────────── */
+    --transition-fast:   all 0.15s ease;
+    --transition-base:   all 0.25s ease;
+    --transition-slow:   all 0.4s ease;
+
+    /* ── Z-Index Scale ──────────────────────────────────────────────────── */
+    --z-below:    -1;
+    --z-base:      1;
+    --z-sticky:   50;
+    --z-header:  100;
+    --z-sidebar:  90;
+    --z-modal:   200;
+    --z-toast:   300;
+    --z-tooltip: 400;
+
+    /* ── Sidebar Dimensions ─────────────────────────────────────────────── */
+    --sidebar-width:         260px;
+    --sidebar-collapsed-w:   70px;
+    --header-height:         68px;
+}
