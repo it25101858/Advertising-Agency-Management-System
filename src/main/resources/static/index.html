@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BrightWave Advertising Agency – Premier 3D and Digital Advertising in Sri Lanka. Manage campaigns, creative assets, and client relations with AdFlow.">
+    <meta name="keywords" content="BrightWave, advertising, 3D billboard, digital marketing, Sri Lanka, AdFlow">
+    <title>AdFlow Enterprise – BrightWave Advertising Agency Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared/styles/variables.css">
+    <link rel="stylesheet" href="shared/styles/reset.css">
+    <link rel="stylesheet" href="shared/styles/typography.css">
+    <link rel="stylesheet" href="shared/styles/layout.css">
+    <link rel="stylesheet" href="shared/styles/components.css">
+    <link rel="stylesheet" href="shared/styles/utilities.css">
+    <link rel="stylesheet" href="shared/styles/responsive.css">
+    <style>
+        /* ── Home Page Specific Styles ───────────────────────────── */
+        body { background: var(--bg-page); }
+
+        /* Hero */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0B0F19 0%, #0F172A 50%, #1a2744 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px var(--space-6) 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(37,99,235,0.18), transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            animation: heroGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes heroGlow { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity:0.8; } 50% { transform: translate(-50%,-50%) scale(1.1); opacity:1; } }
+
+        .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37,99,235,0.15);
+            border: 1px solid rgba(37,99,235,0.4);
+            color: #60A5FA;
+            padding: 8px 18px;
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            animation: bounceIn 0.6s ease;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            font-weight: 800;
+            color: var(--pure-white);
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: var(--space-5);
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--blue-electric), #38BDF8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: var(--text-xl);
+            color: #94A3B8;
+            line-height: 1.7;
+            margin-bottom: var(--space-8);
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--blue-electric), #1D4ED8);
+            color: white;
+            padding: 16px 36px;
+            border-radius: var(--radius-full);
+            font-weight: 800;
+            font-size: 1.05rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(37,99,235,0.45);
+            transition: var(--transition-base);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(37,99,235,0.55); text-decoration: none; color: white; }
+
+        .btn-hero-secondary {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding: 16px 36px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 1.05rem;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: var(--transition-base);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-hero-secondary:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.4); text-decoration: none; color: white; }
+
+        /* Stats row */
+        .hero-stats {
+            display: flex;
+            gap: var(--space-8);
+            justify-content: center;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .hero-stat-label {
+            font-size: var(--text-sm);
+            color: #64748B;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* ── Capabilities Section ─────────────────────────────────── */
+        .section {
+            padding: 80px var(--space-8);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--blue-soft);
+            border: 1px solid var(--border-blue);
+            color: var(--blue-electric);
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            font-weight: 800;
+            color: var(--black-obsidian);
+            letter-spacing: -0.5px;
+            margin-bottom: var(--space-4);
+        }
+
+        .section-subtitle {
+            font-size: var(--text-lg);
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: var(--space-10);
+        }
+
+        .capability-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-blue);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            transition: var(--transition-base);
+        }
+
+        .capability-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(37,99,235,0.12);
+            border-color: var(--blue-electric);
+        }
+
+        .capability-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-4);
+            display: block;
+        }
+
+        .capability-title {
+            font-size: var(--text-xl);
+            font-weight: 800;
+            color: var(--black-obsidian);
+            margin-bottom: var(--space-3);
+        }
+
+        .capability-desc {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ── Portfolio Section ────────────────────────────────────── */
+        .portfolio-section {
+            background: linear-gradient(135deg, #0B0F19, #0F172A);
+            padding: 80px 0;
+        }
+
+        .portfolio-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            color: white;
+            transition: var(--transition-base);
+        }
+
+        .portfolio-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(37,99,235,0.5);
+            transform: translateY(-3px);
+        }
+
+        .portfolio-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-4);
+        }
+
+        /* ── Contact Section ──────────────────────────────────────── */
+        .contact-section {
+            background: linear-gradient(135deg, var(--blue-electric), #1D4ED8);
+            padding: 80px var(--space-8);
+            text-align: center;
+        }
+
+        /* ── Page Footer ──────────────────────────────────────────── */
+        .site-footer {
+            background: var(--black-obsidian);
+            color: #64748B;
+            text-align: center;
+            padding: var(--space-8);
+            font-size: var(--text-sm);
+        }
+
+        .site-footer a { color: #60A5FA; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="app-header" id="app-header"></header>
+
+    <!-- ══════════════════════════════════════════════════
+         HERO SECTION
+    ══════════════════════════════════════════════════ -->
+    <section class="hero-section" id="heroSection">
+        <div class="hero-content">
+            <div class="hero-badge">✨ Sri Lanka's Premier Advertising Management Platform</div>
+
+            <h1 class="hero-title">
+                Where <span class="highlight">3D Creativity</span><br>
+                Meets Digital Excellence
+            </h1>
+
+            <p class="hero-subtitle">
+                BrightWave Advertising — managing award-winning campaigns, immersive 3D billboards, and brand storytelling for Sri Lanka's leading brands since 2019.
+            </p>
+
+            <div class="hero-actions">
+                <a href="pages/auth/login.html" class="btn-hero-primary">
+                    🚀 Access Portal →
+                </a>
+                <a href="#capabilitiesSection" class="btn-hero-secondary" onclick="document.getElementById('capabilitiesSection').scrollIntoView({behavior:'smooth'});return false">
+                    🎯 Our Capabilities
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">150+</div>
+                    <div class="hero-stat-label">Campaigns Delivered</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">45+</div>
+                    <div class="hero-stat-label">Enterprise Clients</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">LKR 2B+</div>
+                    <div class="hero-stat-label">Ad Budget Managed</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">7</div>
+                    <div class="hero-stat-label">Industry Awards</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         CAPABILITIES SECTION
+    ══════════════════════════════════════════════════ -->
+    <section id="capabilitiesSection" style="background: var(--bg-page); padding: 80px 0;">
+        <div class="section">
+            <div style="text-align:center;margin-bottom:60px">
+                <div class="section-tag">🎯 What We Do</div>
+                <h2 class="section-title">Full-Spectrum Advertising Solutions</h2>
+                <p class="section-subtitle">
+                    From immersive 3D anamorphic billboards to integrated digital campaigns,
+                    we deliver work that stops people in their tracks.
+                </p>
+            </div>
+
+            <div class="grid grid-3" style="gap:24px">
+                <div class="capability-card">
+                    <span class="capability-icon">🏙️</span>
+                    <div class="capability-title">3D Anamorphic Billboards</div>
+                    <p class="capability-desc">Jaw-dropping 3D LED billboard designs that appear to leap out of the screen. Iconic large-format installations across Colombo's busiest corridors.</p>
+                </div>
+                <div class="capability-card">
+                    <span class="capability-icon">📢</span>
+                    <div class="capability-title">Integrated Campaigns</div>
+                    <p class="capability-desc">Unified ATL, BTL, and digital campaigns that deliver consistent brand messaging across TV, radio, print, outdoor, and social platforms.</p>
+                </div>
+                <div class="capability-card">
+                    <span class="capability-icon">📱</span>
+                    <div class="capability-title">Digital & Social Media</div>
+                    <p class="capability-desc">Performance-driven digital campaigns across Facebook, Instagram, YouTube, Google Ads, and programmatic display networks.</p>
+                </div>
+                <div class="capability-card">
+                    <span class="capability-icon">🎬</span>
+                    <div class="capability-title">Video Production</div>
+                    <p class="capability-desc">High-impact TV commercials, cinematic brand films, 3D motion graphics, and social media video content with full post-production.</p>
+                </div>
+                <div class="capability-card">
+                    <span class="capability-icon">🎨</span>
+                    <div class="capability-title">Brand Identity & Design</div>
+                    <p class="capability-desc">Comprehensive brand identity systems, visual language development, and print design that positions brands for maximum impact.</p>
+                </div>
+                <div class="capability-card">
+                    <span class="capability-icon">📊</span>
+                    <div class="capability-title">Campaign Analytics</div>
+                    <p class="capability-desc">Real-time performance dashboards, ROI tracking, and data-driven insights that optimize every rupee of your advertising budget.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         PORTFOLIO SECTION
+    ══════════════════════════════════════════════════ -->
+    <section class="portfolio-section" id="portfolioSection">
+        <div class="section">
+            <div style="text-align:center;margin-bottom:60px">
+                <div class="section-tag" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:#60A5FA">🏆 Our Work</div>
+                <h2 class="section-title" style="color:white">Award-Winning Campaigns</h2>
+                <p class="section-subtitle" style="color:#64748B;margin:0 auto">
+                    A selection of our most impactful campaigns delivered for Sri Lanka's leading brands.
+                </p>
+            </div>
+
+            <div class="grid grid-3" style="gap:20px">
+                <div class="portfolio-item">
+                    <div class="portfolio-badge" style="background:rgba(37,99,235,0.3);color:#60A5FA;border:1px solid rgba(37,99,235,0.4)">🌐 Integrated • 2026</div>
+                    <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:8px">Dialog 5G Mega Launch</h3>
+                    <p style="color:#94A3B8;font-size:0.88rem;line-height:1.6">Nationwide 5G awareness campaign featuring a 3D anamorphic Lotus Tower billboard. LKR 2.5M budget. 340% reach increase.</p>
+                    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+                        <span style="background:rgba(37,99,235,0.2);color:#60A5FA;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">3D Outdoor</span>
+                        <span style="background:rgba(37,99,235,0.2);color:#60A5FA;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">Digital</span>
+                        <span style="background:rgba(37,99,235,0.2);color:#60A5FA;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">TV</span>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-badge" style="background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.4)">🎊 Seasonal • 2026</div>
+                    <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:8px">Dialog Avurudu Festive Promo</h3>
+                    <p style="color:#94A3B8;font-size:0.88rem;line-height:1.6">Culturally immersive Sinhala & Tamil New Year campaign with festive visuals, UGC activation, and targeted digital push.</p>
+                    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+                        <span style="background:rgba(245,158,11,0.15);color:#F59E0B;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">Social</span>
+                        <span style="background:rgba(245,158,11,0.15);color:#F59E0B;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">Digital</span>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-badge" style="background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.4)">🏦 Financial • 2025</div>
+                    <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:8px">BOC Digital Banking Launch</h3>
+                    <p style="color:#94A3B8;font-size:0.88rem;line-height:1.6">Integrated campaign launching BOC's new digital banking suite, reaching 2.8M unique audiences across all channels.</p>
+                    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+                        <span style="background:rgba(16,185,129,0.15);color:#10B981;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">ATL</span>
+                        <span style="background:rgba(16,185,129,0.15);color:#10B981;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700">Digital</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         PORTAL SECTION (AdFlow Features)
+    ══════════════════════════════════════════════════ -->
+    <section style="padding:80px 0;background:var(--bg-page)">
+        <div class="section">
+            <div style="text-align:center;margin-bottom:60px">
+                <div class="section-tag">⚡ AdFlow Portal</div>
+                <h2 class="section-title">One Platform, Every Module</h2>
+                <p class="section-subtitle">
+                    The AdFlow portal brings your entire agency workflow into one intelligent platform.
+                </p>
+            </div>
+
+            <div class="grid grid-4">
+                ${[
+                    {icon:'📅', title:'Appointments',   desc:'Schedule & manage client meetings with real-time availability.', href:'pages/appointments/appointments.html'},
+                    {icon:'📢', title:'Campaigns',      desc:'Full campaign lifecycle from brief to delivery and analytics.', href:'pages/campaigns/campaigns.html'},
+                    {icon:'📋', title:'Task Workflow',  desc:'Kanban board with assignees, deadlines, and priority tracking.', href:'pages/tasks/tasks.html'},
+                    {icon:'🖼️', title:'Creative Assets', desc:'Version-controlled asset library with upload and approval flow.', href:'pages/assets/assets.html'},
+                    {icon:'💬', title:'Client Feedback',desc:'Collect and respond to star-rated feedback for every campaign.', href:'pages/feedback/feedback.html'},
+                    {icon:'💳', title:'Invoices',       desc:'Generate VAT invoices, track payments, and export for print.', href:'pages/invoices/invoices.html'},
+                    {icon:'🛡️', title:'User Management',desc:'Role-based access control for staff and client accounts.', href:'pages/users/users.html'},
+                    {icon:'📊', title:'Dashboard',      desc:'Live KPI overview with activity feed and quick-access modules.', href:'pages/dashboard/dashboard.html'}
+                ].map(m => `
+                <a href="${m.href}" class="module-card-link" style="text-decoration:none">
+                    <div class="module-card-icon">${m.icon}</div>
+                    <div class="module-card-info">
+                        <div class="module-card-title">${m.title}</div>
+                        <div class="module-card-desc">${m.desc}</div>
+                    </div>
+                </a>`).join('')}
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         CONTACT SECTION
+    ══════════════════════════════════════════════════ -->
+    <section class="contact-section" id="contactSection">
+        <div style="max-width:640px;margin:0 auto">
+            <h2 style="font-size:2.2rem;font-weight:800;color:white;margin-bottom:16px;letter-spacing:-0.5px">Ready to Elevate Your Brand?</h2>
+            <p style="color:rgba(255,255,255,0.8);font-size:1.05rem;line-height:1.7;margin-bottom:36px">
+                Join BrightWave's growing roster of enterprise clients. Sign in to the portal to schedule your first consultation.
+            </p>
+            <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+                <a href="pages/auth/login.html" style="background:white;color:var(--blue-electric);padding:14px 32px;border-radius:50px;font-weight:800;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                    🔑 Client Sign In
+                </a>
+                <a href="pages/auth/register.html" style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.4);padding:14px 32px;border-radius:50px;font-weight:800;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s ease" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                    📝 Create Account
+                </a>
+            </div>
+            <div style="margin-top:40px;color:rgba(255,255,255,0.6);font-size:0.88rem">
+                📍 No. 45, Galle Road, Colombo 03, Sri Lanka &nbsp;|&nbsp; 📞 +94 11 234 5678 &nbsp;|&nbsp; 📧 hello@brightwave.lk
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>© 2026 <strong>BrightWave Advertising (Pvt) Ltd</strong>. All Rights Reserved.</p>
+        <p style="margin-top:6px">AdFlow Enterprise Management System v2.0 &nbsp;|&nbsp;
+        <a href="pages/auth/login.html">Portal Login</a> &nbsp;|&nbsp;
+        <a href="pages/auth/register.html">Register</a></p>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="shared/api/api-config.js"></script>
+    <script src="shared/api/api-client.js"></script>
+    <script src="shared/utils/storage-utils.js"></script>
+    <script src="shared/utils/format-utils.js"></script>
+    <script src="shared/utils/date-utils.js"></script>
+    <script src="shared/utils/permission-utils.js"></script>
+    <script src="shared/components/toast.js"></script>
+    <script src="shared/components/modal.js"></script>
+    <script src="shared/components/navbar.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        Navbar.render({ activePage: 'home' });
+        Navbar.init();
+        Modal.init();
+
+        // If already authenticated, redirect to dashboard
+        if (StorageUtils.getToken() && StorageUtils.getUser()) {
+            // Only auto-redirect if they click the portal button, not on load
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const id = link.getAttribute('href').slice(1);
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+                e.preventDefault();
+            });
+        });
+    });
+    </script>
+</body>
+</html>

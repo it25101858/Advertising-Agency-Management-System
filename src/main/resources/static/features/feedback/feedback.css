@@ -1,0 +1,67 @@
+/* ============================================================================
+   AdFlow - Feedback Feature Styles
+   ============================================================================ */
+
+.feedback-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-blue);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: var(--transition-base);
+}
+
+.feedback-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-subtle);
+}
+
+.star-rating {
+    display: flex;
+    gap: 4px;
+}
+
+.star {
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    line-height: 1;
+}
+
+.star:hover { transform: scale(1.2); }
+.star.filled  { filter: none; }
+.star.empty   { filter: grayscale(1) opacity(0.3); }
+
+.feedback-author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.author-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-electric), var(--accent-purple));
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.feedback-comment {
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    line-height: 1.65;
+    font-style: italic;
+    margin: var(--space-4) 0;
+    padding: var(--space-4);
+    background: var(--blue-soft);
+    border-left: 3px solid var(--blue-electric);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-5);
+}

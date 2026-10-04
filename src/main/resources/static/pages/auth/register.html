@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your AdFlow client account – BrightWave Advertising Portal">
+    <title>Create Account • AdFlow Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../shared/styles/components.css">
+    <link rel="stylesheet" href="../../features/auth/auth.css">
+</head>
+<body class="auth-page">
+
+    <div class="auth-card" style="max-width:500px">
+
+        <!-- Logo -->
+        <div class="auth-logo">
+            <div class="auth-logo-badge">AdFlow</div>
+            <div class="auth-logo-text">BrightWave Advertising (Pvt) Ltd<br>Client Portal Registration</div>
+        </div>
+
+        <h2 class="auth-heading">Create Your Account</h2>
+        <p class="auth-subheading">Join the BrightWave client portal to manage your campaigns and track creative progress.</p>
+
+        <!-- Alert -->
+        <div class="auth-alert" id="authAlert"></div>
+
+        <form id="registerForm" autocomplete="off" novalidate>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div class="form-group">
+                    <label class="form-label" for="regName">Full Name <span style="color:var(--accent-red)">*</span></label>
+                    <input type="text" id="regName" class="form-control" placeholder="Kasun Perera" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="regEmail">Email <span style="color:var(--accent-red)">*</span></label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="kasun@dialog.lk" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="regCompany">Company / Organization</label>
+                <input type="text" id="regCompany" class="form-control" placeholder="Dialog Axiata PLC">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="regPhone">Phone Number</label>
+                <input type="tel" id="regPhone" class="form-control" placeholder="+94 77 123 4567">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="regPassword">Password <span style="color:var(--accent-red)">*</span></label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔑</span>
+                    <input type="password" id="regPassword" class="form-control"
+                           placeholder="Min. 6 characters" minlength="6" required>
+                </div>
+                <span class="form-hint">Minimum 6 characters. Mix letters and numbers for best security.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-auth" id="registerBtn">
+                Complete Registration →
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account?
+            <a href="login.html">Sign in here</a>
+            &nbsp;|&nbsp;
+            <a href="../../index.html">Back to Home</a>
+        </div>
+    </div>
+
+    <script src="../../shared/api/api-config.js"></script>
+    <script src="../../shared/api/api-client.js"></script>
+    <script src="../../shared/utils/storage-utils.js"></script>
+    <script src="../../shared/utils/format-utils.js"></script>
+    <script src="../../shared/utils/validation-utils.js"></script>
+    <script src="../../shared/components/loader.js"></script>
+    <script src="../../shared/components/modal.js"></script>
+    <script src="../../features/auth/auth-api.js"></script>
+    <script src="../../features/auth/auth-validation.js"></script>
+    <script>
+    // Standalone register page controller
+    document.addEventListener('DOMContentLoaded', () => {
+        if (StorageUtils.getToken()) {
+            window.location.href = '../dashboard/dashboard.html';
+            return;
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                fullName:    document.getElementById('regName').value.trim(),
+                email:       document.getElementById('regEmail').value.trim(),
+                password:    document.getElementById('regPassword').value,
+                phone:       document.getElementById('regPhone').value.trim(),
+                companyName: document.getElementById('regCompany').value.trim()
+            };
+
+            const alert = document.getElementById('authAlert');
+            alert.className = 'auth-alert';
+
+            if (!data.fullName) { showAlert('Full name is required.', 'error'); return; }
+            if (!data.email || !data.email.includes('@')) { showAlert('Valid email is required.', 'error'); return; }
+            if (!data.password || data.password.length < 6) { showAlert('Password must be at least 6 characters.', 'error'); return; }
+
+            const btn = document.getElementById('registerBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating account…';
+
+            try {
+                const res = await SharedApiClient.post(ApiConfig.ENDPOINTS.REGISTER, data);
+                if (res && (res.token || res.accessToken)) {
+                    StorageUtils.setToken(res.token || res.accessToken);
+                    StorageUtils.setUser(res.user || res);
+                    window.location.href = '../dashboard/dashboard.html';
+                } else {
+                    showAlert('Registration successful! You can now sign in.', 'success');
+                    setTimeout(() => window.location.href = 'login.html', 1500);
+                }
+            } catch (err) {
+                showAlert(err.message || 'Registration failed. Email may already be in use.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Complete Registration →';
+            }
+        });
+
+        function showAlert(msg, type) {
+            const el = document.getElementById('authAlert');
+            el.className = `auth-alert show ${type}`;
+            el.innerHTML = `${type === 'error' ? '❌' : '✅'} ${msg}`;
+        }
+    });
+    </script>
+</body>
+</html>
