@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdFlow - Advertising Agency Management System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Navigation Bar (Dynamic for Public vs Management Portal) -->
+        <header id="mainHeader">
+        <div class="brand" onclick="goToHomePage()" style="cursor: pointer;" title="Go to Home Page">
+            <div class="logo-badge">BrightWave</div>
+            <div class="brand-text">
+                <h1>BrightWave Advertising</h1>
+                <p>Premier 3D &amp; Digital Advertising Agency &bull; Colombo, Sri Lanka</p>
+            </div>
+        </div>
+
+        <!-- Public Navigation Bar Links (Visible for Visitors) -->
+        <nav class="public-nav-links" id="publicNavLinks">
+            <a href="javascript:void(0)" onclick="scrollToSection('heroSection', this)" class="nav-link active">Home</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('capabilitiesSection', this)" class="nav-link">Capabilities</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('portfolioSection', this)" class="nav-link">Portfolio</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('testimonialsSection', this)" class="nav-link">Testimonials</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('contactSection', this)" class="nav-link">Contact &amp; HQ</a>
+        </nav>
+
+        <!-- Public Action Button (Portal Access / Login) -->
+        <div class="header-right-actions" id="publicHeaderActions">
+            <button class="btn-portal-login" onclick="openLoginModal()">
+                🔑 Sign In / Sign Up
+            </button>
+        </div>
+
+        <!-- Management Portal Controls (Visible after Portal Login) -->
+        <div class="management-controls" id="managementHeaderControls" style="display: none; align-items: center; gap: 14px;">
+            <!-- Notification Bell Dropdown Container -->
+            <div class="notif-bell-container">
+                <button class="btn-notif-bell" onclick="toggleNotificationDropdown()" title="System Notifications">
+                    🔔 <span class="notif-badge-count" id="notifBadgeCount">3</span>
+                </button>
+
+                <!-- Notifications Dropdown Popup -->
+                <div class="notif-dropdown-popup" id="notifDropdownPopup" style="display: none;">
+                    <div class="notif-dropdown-header">
+                        <span>🔔 Live Updates</span>
+                        <button onclick="markAllNotificationsRead()" class="btn-clear-notif">Mark all as read</button>
+                    </div>
+                    <div class="notif-dropdown-list" id="notifDropdownList">
+                        <!-- Dynamic Notifications Injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-logout" onclick="logoutPortal()">🚪 Logout</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation (Hidden on Public Home, Visible in Portal Mode) -->
+        <sidebar id="appSidebar" style="display: none;">
+            <div class="sidebar-portal-badge">
+                <span>AdFlow Portal</span>
+                <span class="portal-status-dot">🟢 LIVE</span>
+            </div>
+            
+            <a class="nav-item" onclick="showModule('appointments')" id="nav-appointments">
+                <span>📅 Appointments</span>
+            </a>
+            
+            <a class="nav-item" onclick="showModule('campaigns')" id="nav-campaigns">
+                <span>📢 Campaigns</span>
+            </a>
+            
+            <a class="nav-item" onclick="showModule('tasks')" id="nav-tasks">
+                <span>📋 Tasks &amp; Workflow</span>
+            </a>
+            
+            <a class="nav-item" onclick="showModule('feedback')" id="nav-feedback">
+                <span>💬 Client Feedback</span>
+            </a>
+            
+            <a class="nav-item" onclick="showModule('assets')" id="nav-assets">
+                <span>🖼️ Creative Asset Management</span>
+            </a>
+            
+            <a class="nav-item" onclick="showModule('finance')" id="nav-finance">
+                <span>💳 Invoicing &amp; Billing</span>
+            </a>
+
+            <a class="nav-item" onclick="showModule('admin-users')" id="nav-admin-users" style="display:none;">
+                <span>🛡️ Staff Login Accounts</span>
+            </a>
+
+            <a class="nav-item" onclick="showModule('profile')" id="nav-profile">
+                <span>👤 Profile &amp; Account</span>
+            </a>
+        </sidebar>
+
+        <!-- Main Content Area -->
+        <main class="content-area" id="mainContent">
+            <!-- Dynamic Content Injected Here by app.js -->
+        </main>
+    </div>
+
+    <!-- Portal Authentication Modal (Sign In & Sign Up) -->
+    <div class="modal-overlay" id="loginModalOverlay" style="display: none;">
+        <div class="modal-content login-modal-box">
+            <div class="modal-header">
+                <h3 id="authModalTitle">🔒 Member Authentication</h3>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            
+            <!-- Auth Switcher Tabs -->
+            <div class="auth-tabs-container">
+                <button class="auth-tab-btn active" id="tabSignInBtn" type="button" onclick="switchAuthTab('signin')">🔒 Sign In</button>
+                <button class="auth-tab-btn" id="tabSignUpBtn" type="button" onclick="switchAuthTab('signup')">📝 Create Account</button>
+            </div>
+
+            <!-- 1. SIGN IN FORM -->
+            <form id="signInForm" autocomplete="off" onsubmit="event.preventDefault(); performPortalLogin();">
+                <div id="loginAlert" class="auth-alert-box auth-alert-error" style="display: none;"></div>
+                
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="text" id="loginEmail" class="form-control" autocomplete="off" placeholder="Enter your email address" required value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" autocomplete="new-password" placeholder="Enter your password" required minlength="6" value="">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
+                    Sign In to Portal &rarr;
+                </button>
+            </form>
+
+            <!-- 2. CREATE ACCOUNT / SIGN UP FORM -->
+            <form id="signUpForm" style="display: none;" autocomplete="off" onsubmit="event.preventDefault(); performUserRegistration();">
+                <div id="regAlert" class="auth-alert-box auth-alert-error" style="display: none;"></div>
+
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" class="form-control" autocomplete="off" placeholder="Enter your full name" required value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="text" id="regEmail" class="form-control" autocomplete="off" placeholder="Enter your email address" required value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" class="form-control" autocomplete="new-password" placeholder="Create your password" required minlength="6" value="">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
+                    Register &amp; Enter Portal &rarr;
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Universal Modal Window for Form Input -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Create New Record</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Form Inputs dynamically loaded per module -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

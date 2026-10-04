@@ -1,0 +1,12 @@
+package com.adflow.user.enums;
+
+public enum UserRole {
+    CLIENT,
+    CLIENT_RELATIONS_OFFICER,
+    MARKETING_MANAGER,
+    CREATIVE_TEAM_LEAD,
+    CREATIVE_STAFF,
+    FINANCE_EXECUTIVE,
+    MANAGING_DIRECTOR,
+    SYSTEM_ADMIN
+}

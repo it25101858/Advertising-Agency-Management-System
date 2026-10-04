@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AdFlow Dashboard – BrightWave Advertising Management System">
+    <title>Dashboard • AdFlow Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../shared/styles/typography.css">
+    <link rel="stylesheet" href="../../shared/styles/layout.css">
+    <link rel="stylesheet" href="../../shared/styles/components.css">
+    <link rel="stylesheet" href="../../shared/styles/utilities.css">
+    <link rel="stylesheet" href="../../shared/styles/responsive.css">
+    <link rel="stylesheet" href="../../features/dashboard/dashboard.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="app-header" id="app-header"></header>
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <aside class="app-sidebar" id="app-sidebar"></aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+
+            <!-- Welcome Banner -->
+            <div id="welcomeSection"></div>
+
+            <!-- Quick Actions -->
+            <div id="quickActions"></div>
+
+            <!-- KPI Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <!-- Skeleton placeholders while loading -->
+                <div class="stat-card skeleton" style="height:120px"></div>
+                <div class="stat-card skeleton" style="height:120px"></div>
+                <div class="stat-card skeleton" style="height:120px"></div>
+                <div class="stat-card skeleton" style="height:120px"></div>
+                <div class="stat-card skeleton" style="height:120px"></div>
+                <div class="stat-card skeleton" style="height:120px"></div>
+            </div>
+
+            <!-- Dashboard Grid: Modules + Activity -->
+            <div class="dashboard-grid">
+
+                <!-- Module Navigation Grid -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">📌 My Modules</span>
+                        <span class="badge badge-blue">Quick Access</span>
+                    </div>
+                    <div id="moduleGrid" style="display:flex;flex-direction:column;gap:10px">
+                        <div class="skeleton" style="height:72px;border-radius:12px"></div>
+                        <div class="skeleton" style="height:72px;border-radius:12px"></div>
+                        <div class="skeleton" style="height:72px;border-radius:12px"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Feed -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">🔔 Recent Activity</span>
+                        <span class="badge badge-green">Live</span>
+                    </div>
+                    <div id="activityFeed">
+                        <div class="skeleton" style="height:55px;border-radius:8px;margin-bottom:8px"></div>
+                        <div class="skeleton" style="height:55px;border-radius:8px;margin-bottom:8px"></div>
+                        <div class="skeleton" style="height:55px;border-radius:8px"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Shared Scripts -->
+    <script src="../../shared/api/api-config.js"></script>
+    <script src="../../shared/api/api-client.js"></script>
+    <script src="../../shared/utils/storage-utils.js"></script>
+    <script src="../../shared/utils/format-utils.js"></script>
+    <script src="../../shared/utils/date-utils.js"></script>
+    <script src="../../shared/utils/validation-utils.js"></script>
+    <script src="../../shared/utils/permission-utils.js"></script>
+    <script src="../../shared/components/toast.js"></script>
+    <script src="../../shared/components/modal.js"></script>
+    <script src="../../shared/components/loader.js"></script>
+    <script src="../../shared/components/confirmation.js"></script>
+    <script src="../../shared/components/table.js"></script>
+    <script src="../../shared/components/pagination.js"></script>
+    <script src="../../shared/components/navbar.js"></script>
+    <script src="../../shared/components/sidebar.js"></script>
+    <!-- Dashboard Feature -->
+    <script src="../../features/dashboard/dashboard-api.js"></script>
+    <script src="../../features/dashboard/dashboard.js"></script>
+</body>
+</html>

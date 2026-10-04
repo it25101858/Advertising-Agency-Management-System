@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Management â€¢ Mendiya J.L.P.S (AdFlow)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        .filter-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+        .validation-alert {
+            display: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .campaign-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .campaign-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-purple);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand" onclick="goToHomePage()" style="cursor: pointer;" title="Go to Home Page">
+            <div class="logo-badge">AdFlow</div>
+            <div class="brand-text">
+                <h1>BrightWave Advertising</h1>
+                <p>Campaign Management & Business Strategy System</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/" class="btn btn-outline-light btn-sm">â† Back to Main System</a>
+        </div>
+    </header>
+
+    <div class="container-fluid p-4">
+        
+        <!-- Validation / Status Notification Banner -->
+        <div id="alertBanner" class="alert alert-danger validation-alert alert-dismissible fade show" role="alert">
+            <span id="alertMessage">Validation Error Message</span>
+            <button type="button" class="btn-close" onclick="hideAlert()"></button>
+        </div>
+
+        <div class="page-header d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>ðŸŽ¯ Advertising Campaign Portfolio</h2>
+                <p class="text-secondary mb-0">Create complete campaign records, control whether the campaign is available to the client, validate all campaign details, and manage lifecycle status.</p>
+            </div>
+            <button class="btn-primary" onclick="openRegisterModal()">+ Register New Campaign</button>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="filter-bar">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-5">
+                    <label class="form-label text-secondary small fw-bold">Search Campaigns</label>
+                    <input type="text" id="searchKeyword" class="form-control bg-dark text-light border-secondary" placeholder="Search by campaign name or objectives..." oninput="loadCampaigns()">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Filter Status</label>
+                    <select id="filterStatus" class="form-select bg-dark text-light border-secondary" onchange="loadCampaigns()">
+                        <option value="ALL">All Statuses (Active, Upcoming, Completed, Archived)</option>
+                        <option value="ACTIVE" selected>Active Campaigns</option>
+                        <option value="UPCOMING">Upcoming Campaigns</option>
+                        <option value="COMPLETED">Completed Campaigns</option>
+                        <option value="ARCHIVED">Archived Campaigns</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn btn-outline-secondary w-100 mt-4" onclick="resetFilters()">Reset Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaign Portfolio Grid -->
+        <div id="campaignGrid" class="row">
+            <!-- Loaded dynamically by campaign-app.js -->
+        </div>
+    </div>
+
+    <!-- Registration / Edit Modal -->
+    <div class="modal-overlay" id="campaignModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalHeading">Register New Campaign</h3>
+                <button class="close-btn" onclick="closeCampaignModal()">&times;</button>
+            </div>
+            <form id="campaignForm" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="campId" value="0">
+                <input type="hidden" id="formAction" value="CREATE">
+
+                <div class="form-group">
+                    <label>Client Account <span class="text-danger">*</span></label>
+                    <select id="clientId" class="form-control" required>
+                        <option value="1">Dialog Axiata PLC</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Account / Marketing Manager <span class="text-danger">*</span></label>
+                    <select id="managerId" class="form-control" required>
+                        <option value="3">Mendiya J.L.P.S (Marketing Manager)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Campaign Name (3 - 100 chars) <span class="text-danger">*</span></label>
+                    <input type="text" id="campaignName" class="form-control" placeholder="e.g. 5G Mega Launch 2026" minlength="3" maxlength="100" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Campaign Type <span class="text-danger">*</span></label>
+                        <select id="campaignType" class="form-control" required>
+                            <option value="">Select type...</option><option>DIGITAL</option><option>SOCIAL_MEDIA</option><option>TV_RADIO</option><option>OUTDOOR</option><option>INTEGRATED</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Priority <span class="text-danger">*</span></label>
+                        <select id="priority" class="form-control" required><option>LOW</option><option selected>MEDIUM</option><option>HIGH</option><option>URGENT</option></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Target Audience <span class="text-danger">*</span></label>
+                    <input type="text" id="targetAudience" class="form-control" minlength="3" maxlength="150" placeholder="e.g. Sri Lankan mobile users aged 18-35" required>
+                </div>
+                <div class="form-group">
+                    <label>Primary Channels <span class="text-danger">*</span></label>
+                    <input type="text" id="channels" class="form-control" minlength="3" maxlength="150" placeholder="e.g. Facebook, Instagram, TV, Outdoor" required>
+                </div>
+                <div class="form-group">
+                    <label>Allocated Budget (LKR > 0.00) <span class="text-danger">*</span></label>
+                    <input type="number" id="budget" class="form-control" step="0.01" min="0.01" placeholder="e.g. 2500000.00" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Start Date <span class="text-danger">*</span></label>
+                        <input type="date" id="startDate" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>End Date (End > Start) <span class="text-danger">*</span></label>
+                        <input type="date" id="endDate" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Campaign Objectives <span class="text-danger">*</span></label>
+                    <textarea id="objectives" class="form-control" rows="2" minlength="10" maxlength="500" placeholder="e.g. Drive nationwide 5G adoption..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Creative Brief <span class="text-danger">*</span></label>
+                    <textarea id="briefText" class="form-control" rows="3" minlength="10" maxlength="1000" placeholder="Campaign concept, message, tone, brand requirements..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Expected Deliverables <span class="text-danger">*</span></label>
+                    <textarea id="deliverables" class="form-control" rows="2" minlength="5" maxlength="500" placeholder="e.g. 6 banners, 2 videos, radio script" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Success KPIs <span class="text-danger">*</span></label>
+                    <textarea id="kpis" class="form-control" rows="2" minlength="5" maxlength="500" placeholder="e.g. Reach, leads, conversions, engagement target" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Client Campaign Access <span class="text-danger">*</span></label>
+                    <select id="clientAccess" class="form-control" required>
+                        <option value="AVAILABLE">AVAILABLE - client can view campaign</option>
+                        <option value="NOT_AVAILABLE">NOT AVAILABLE - hidden from client</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="statusGroup" style="display:none;">
+                    <label>Operational Status</label>
+                    <select id="statusSelect" class="form-control">
+                        <option value="UPCOMING">UPCOMING</option>
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="IN_REVIEW">IN_REVIEW</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                        <option value="ARCHIVED">ARCHIVED</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary w-100 mt-3">Submit Campaign</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Detailed Single Campaign View Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content" style="max-width:650px;">
+            <div class="modal-header">
+                <h3>Campaign Details & Strategy View</h3>
+                <button class="close-btn" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div id="detailBody" class="p-2">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/campaign-app.js"></script>
+</body>
+</html>

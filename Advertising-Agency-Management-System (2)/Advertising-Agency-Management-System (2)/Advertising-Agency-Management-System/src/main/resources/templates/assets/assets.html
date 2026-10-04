@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Library & Creative Assets â€¢ Navodi V.G.C (AdFlow)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        .filter-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+        .validation-alert {
+            display: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .asset-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .asset-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+        }
+        .asset-preview-box {
+            height: 140px;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand" onclick="goToHomePage()" style="cursor: pointer;" title="Go to Home Page">
+            <div class="logo-badge">AdFlow</div>
+            <div class="brand-text">
+                <h1>BrightWave Advertising</h1>
+                <p>Creative Asset Management & Media Library System</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/" class="btn btn-outline-light btn-sm">â† Back to Main System</a>
+        </div>
+    </header>
+
+    <div class="container-fluid p-4">
+        
+        <!-- Validation / Status Notification Banner -->
+        <div id="alertBanner" class="alert alert-danger validation-alert alert-dismissible fade show" role="alert">
+            <span id="alertMessage">Validation Error Message</span>
+            <button type="button" class="btn-close" onclick="hideAlert()"></button>
+        </div>
+
+        <div class="page-header d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>ðŸ“ Digital Media Library & Version Control</h2>
+                <p class="text-secondary mb-0">View created work, upload complete creative-asset records, maintain metadata/version information, and approve or request revision on existing assets.</p>
+            </div>
+            <button class="btn-primary" onclick="openUploadModal()">+ Upload New Asset</button>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="filter-bar">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <label class="form-label text-secondary small fw-bold">Search Media Library</label>
+                    <input type="text" id="searchKeyword" class="form-control bg-dark text-light border-secondary" placeholder="Search by file name or tags..." oninput="loadAssets()">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small fw-bold">Filter Category</label>
+                    <select id="filterCategory" class="form-select bg-dark text-light border-secondary" onchange="loadAssets()">
+                        <option value="ALL">All Categories</option>
+                        <option value="IMAGE">Image / Graphic</option>
+                        <option value="VIDEO">Video / Animation</option>
+                        <option value="DOCUMENT">PDF Document</option>
+                        <option value="COPYWRITING">Copywriting Script</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small fw-bold">Approval Status</label>
+                    <select id="filterStatus" class="form-select bg-dark text-light border-secondary" onchange="loadAssets()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="PENDING">Pending Approval</option>
+                        <option value="NEEDS_REVISION">Needs Revision</option>
+                        <option value="APPROVED">Approved</option>
+                        <option value="REJECTED">Rejected</option>
+                        <option value="ARCHIVED">Archived</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-outline-secondary w-100 mt-4" onclick="resetFilters()">Reset Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Grid Display -->
+        <div id="assetGrid" class="row g-3">
+            <!-- Loaded dynamically by asset-app.js -->
+        </div>
+    </div>
+
+    <!-- Upload Asset Modal -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalHeading">Upload Creative Deliverable</h3>
+                <button class="close-btn" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <form id="uploadForm" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="assetId" value="0">
+                <input type="hidden" id="formAction" value="UPLOAD">
+
+                <div class="form-group">
+                    <label>Parent Campaign <span class="text-danger">*</span></label>
+                    <select id="campaignId" class="form-control" required>
+                        <option value="1">5G Mega Launch 2026</option>
+                        <option value="2">Avurudu Festive Promo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Uploader Staff Member <span class="text-danger">*</span></label>
+                    <select id="uploadedById" class="form-control" required>
+                        <option value="5">Navodi V.G.C (Designer)</option>
+                        <option value="6">Yashika J. (Copywriter)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Asset Title <span class="text-danger">*</span></label>
+                    <input type="text" id="assetTitle" class="form-control" minlength="3" maxlength="120" placeholder="e.g. 5G Lotus Tower Final Mockup" required>
+                </div>
+                <div class="form-group">
+                    <label>Description <span class="text-danger">*</span></label>
+                    <textarea id="description" class="form-control" rows="2" minlength="10" maxlength="500" placeholder="Describe what this asset contains and its purpose..." required></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group"><label>Usage / Channel <span class="text-danger">*</span></label><select id="usageChannel" class="form-control" required><option value="">Select...</option><option>SOCIAL_MEDIA</option><option>WEB</option><option>TV</option><option>RADIO</option><option>PRINT</option><option>OUTDOOR</option><option>INTERNAL</option></select></div>
+                    <div class="col-md-6 form-group"><label>Version Notes <span class="text-danger">*</span></label><input id="versionNotes" class="form-control" minlength="3" maxlength="200" placeholder="e.g. First client-review version" required></div>
+                </div>
+                <div class="form-group" id="fileGroup">
+                    <label>Select Media File (Max 50 MB | Allowed: .jpg, .png, .pdf, .mp4, .docx) <span class="text-danger">*</span></label>
+                    <input type="file" id="mediaFile" class="form-control" accept=".jpg,.jpeg,.png,.pdf,.mp4,.docx">
+                </div>
+
+                <div class="form-group">
+                    <label>Asset Category <span class="text-danger">*</span></label>
+                    <select id="category" class="form-control" required>
+                        <option value="IMAGE">IMAGE (Graphics, Banners, Mockups)</option>
+                        <option value="VIDEO">VIDEO (3D Animations, TV Commercials)</option>
+                        <option value="DOCUMENT">DOCUMENT (PDF Reports, Guidelines)</option>
+                        <option value="COPYWRITING">COPYWRITING (Radio Scripts, Ad Copy)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Asset Tags (Comma Separated)</label>
+                    <input type="text" id="tags" class="form-control" placeholder="e.g. 5G, Billboard, 3D, Mockup">
+                </div>
+
+                <div class="form-group" id="statusGroup" style="display:none;">
+                    <label>Approval Status</label>
+                    <select id="statusSelect" class="form-control">
+                        <option value="PENDING">PENDING</option>
+                        <option value="NEEDS_REVISION">NEEDS_REVISION</option>
+                        <option value="APPROVED">APPROVED</option>
+                        <option value="REJECTED">REJECTED</option>
+                        <option value="ARCHIVED">ARCHIVED</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary w-100 mt-3">Upload Deliverable</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/asset-app.js"></script>
+</body>
+</html>

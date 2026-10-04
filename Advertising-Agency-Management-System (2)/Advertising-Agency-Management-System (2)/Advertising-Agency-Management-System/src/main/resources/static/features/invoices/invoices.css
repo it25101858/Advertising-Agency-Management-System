@@ -1,0 +1,106 @@
+/* ============================================================================
+   AdFlow - Invoices Feature Styles
+   ============================================================================ */
+
+.invoice-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-blue);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: var(--transition-base);
+    position: relative;
+}
+
+.invoice-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
+
+.invoice-number {
+    font-size: var(--text-lg);
+    font-weight: 800;
+    color: var(--blue-electric);
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+}
+
+.invoice-amount {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    color: var(--black-obsidian);
+    margin: var(--space-2) 0;
+}
+
+/* Print-ready invoice */
+.invoice-print {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.invoice-print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 3px solid var(--blue-electric);
+}
+
+.invoice-line-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+}
+
+.invoice-line-items th {
+    background: var(--blue-soft);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--blue-electric);
+    border-bottom: 2px solid var(--border-blue);
+}
+
+.invoice-line-items td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.invoice-totals {
+    margin-left: auto;
+    width: 300px;
+    border-top: 2px solid var(--border-color);
+    padding-top: 16px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.9rem;
+}
+
+.total-row.grand {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--blue-electric);
+    border-top: 2px solid var(--border-blue);
+    margin-top: 8px;
+    padding-top: 12px;
+}
+
+/* Calculator */
+.calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: var(--text-sm);
+}
+
+.calc-row:last-child { border-bottom: none; }
+.calc-total { font-size: var(--text-xl); font-weight: 800; color: var(--blue-electric); }

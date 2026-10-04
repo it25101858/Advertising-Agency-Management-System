@@ -1,0 +1,101 @@
+/* ============================================================================
+   AdFlow - Utility Classes
+   ============================================================================ */
+
+/* ── Display ─────────────────────────────────────────────────────────── */
+.d-none  { display: none !important; }
+.d-block { display: block; }
+.d-flex  { display: flex; }
+.d-grid  { display: grid; }
+.d-inline{ display: inline; }
+.d-inline-flex { display: inline-flex; }
+
+/* ── Backgrounds ──────────────────────────────────────────────────────── */
+.bg-white  { background: var(--pure-white); }
+.bg-page   { background: var(--bg-page); }
+.bg-blue   { background: var(--blue-electric); color: white; }
+.bg-blue-soft { background: var(--blue-soft); }
+.bg-dark   { background: var(--black-obsidian); color: white; }
+.bg-success{ background: var(--badge-green-bg); }
+.bg-danger { background: var(--badge-red-bg); }
+.bg-warning{ background: var(--badge-amber-bg); }
+
+/* ── Borders ──────────────────────────────────────────────────────────── */
+.border     { border: 1px solid var(--border-color); }
+.border-blue{ border: 1.5px solid var(--border-blue); }
+.border-top { border-top: 1px solid var(--border-color); }
+.border-bottom { border-bottom: 1px solid var(--border-color); }
+.border-none { border: none; }
+
+/* ── Shadow ───────────────────────────────────────────────────────────── */
+.shadow-sm  { box-shadow: var(--shadow-sm); }
+.shadow     { box-shadow: var(--shadow-subtle); }
+.shadow-lg  { box-shadow: var(--shadow-elevated); }
+.shadow-none{ box-shadow: none; }
+
+/* ── Cursor ───────────────────────────────────────────────────────────── */
+.cursor-pointer { cursor: pointer; }
+.cursor-default { cursor: default; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+/* ── User Select ──────────────────────────────────────────────────────── */
+.select-none { user-select: none; }
+.select-all  { user-select: all; }
+
+/* ── Pointer Events ───────────────────────────────────────────────────── */
+.pointer-none { pointer-events: none; }
+.pointer-auto { pointer-events: auto; }
+
+/* ── Misc ─────────────────────────────────────────────────────────────── */
+.divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: var(--space-5) 0;
+}
+
+.vertical-divider {
+    width: 1px;
+    background: var(--border-color);
+    align-self: stretch;
+}
+
+.glass-panel {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(37,99,235,0.2);
+    border-radius: var(--radius-lg);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--blue-electric), var(--blue-cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.no-wrap { white-space: nowrap; }
+
+/* ── Hover Effects ────────────────────────────────────────────────────── */
+.hover-lift { transition: var(--transition-base); }
+.hover-lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-elevated); }
+
+.hover-blue:hover { color: var(--blue-electric); }
+
+/* ── Scroll ───────────────────────────────────────────────────────────── */
+.scroll-x { overflow-x: auto; }
+.scroll-y { overflow-y: auto; }
+
+/* ── Aspect Ratios ────────────────────────────────────────────────────── */
+.ratio-square { aspect-ratio: 1/1; }
+.ratio-video  { aspect-ratio: 16/9; }
+
+/* ── Object Fit ───────────────────────────────────────────────────────── */
+.object-cover   { object-fit: cover; }
+.object-contain { object-fit: contain; }
