@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Client feedback management – AdFlow Enterprise">
+    <title>Client Feedback • AdFlow Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../shared/styles/typography.css">
+    <link rel="stylesheet" href="../../shared/styles/layout.css">
+    <link rel="stylesheet" href="../../shared/styles/components.css">
+    <link rel="stylesheet" href="../../shared/styles/utilities.css">
+    <link rel="stylesheet" href="../../shared/styles/responsive.css">
+    <link rel="stylesheet" href="../../features/feedback/feedback.css">
+</head>
+<body>
+    <header class="app-header" id="app-header"></header>
+    <div class="app-container">
+        <aside class="app-sidebar" id="app-sidebar"></aside>
+        <main class="content-area">
+
+            <div class="page-header">
+                <div class="page-title">
+                    <h2>💬 Client Feedback</h2>
+                    <p>View and manage client reviews and campaign feedback</p>
+                </div>
+                <div class="page-header-actions">
+                    <button class="btn btn-primary" id="submitFbBtn" onclick="FeedbackForm.open()">+ Submit Feedback</button>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:24px">
+                <div class="stat-card blue"   style="padding:20px"><div class="stat-icon">💬</div><div class="stat-title">Total Reviews</div><div class="stat-value" id="statTotal">—</div></div>
+                <div class="stat-card green"  style="padding:20px"><div class="stat-icon">⭐</div><div class="stat-title">Avg Rating</div><div class="stat-value" id="statAvg">—</div></div>
+                <div class="stat-card amber"  style="padding:20px"><div class="stat-icon">🥇</div><div class="stat-title">5-Star Reviews</div><div class="stat-value" id="stat5Star">—</div></div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="form-control search-input" placeholder="Client, campaign, comment..." oninput="loadFeedback()">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Rating</label>
+                    <select id="filterRating" class="form-control" onchange="loadFeedback()">
+                        <option value="ALL">All Ratings</option>
+                        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                        <option value="4">⭐⭐⭐⭐ (4)</option>
+                        <option value="3">⭐⭐⭐ (3)</option>
+                        <option value="2">⭐⭐ (2)</option>
+                        <option value="1">⭐ (1)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Feedback Grid -->
+            <div class="feedback-grid" id="feedbackGrid">
+                <div class="feedback-card skeleton" style="height:200px"></div>
+                <div class="feedback-card skeleton" style="height:200px"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Submit Feedback</h3>
+                <button class="modal-close" onclick="Modal.close('feedbackModal')">×</button>
+            </div>
+            <div id="feedbackModalBody"></div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="../../shared/api/api-config.js"></script>
+    <script src="../../shared/api/api-client.js"></script>
+    <script src="../../shared/utils/storage-utils.js"></script>
+    <script src="../../shared/utils/format-utils.js"></script>
+    <script src="../../shared/utils/date-utils.js"></script>
+    <script src="../../shared/utils/validation-utils.js"></script>
+    <script src="../../shared/utils/permission-utils.js"></script>
+    <script src="../../shared/components/toast.js"></script>
+    <script src="../../shared/components/modal.js"></script>
+    <script src="../../shared/components/loader.js"></script>
+    <script src="../../shared/components/confirmation.js"></script>
+    <script src="../../shared/components/table.js"></script>
+    <script src="../../shared/components/navbar.js"></script>
+    <script src="../../shared/components/sidebar.js"></script>
+    <script src="../../features/feedback/feedback-api.js"></script>
+    <script src="../../features/feedback/feedback-form.js"></script>
+    <script src="../../features/feedback/feedback.js"></script>
+    <script>
+    // Stats injector
+    const _origLoadFb = window.loadFeedback;
+    window.loadFeedback = function() {
+        _origLoadFb?.();
+        setTimeout(() => {
+            const state = window.feedbackState || [];
+            const el = id => document.getElementById(id);
+            const avg = state.length ? (state.reduce((s,f)=>s+f.rating,0)/state.length).toFixed(1) : 0;
+            if (el('statTotal'))  el('statTotal').textContent  = state.length;
+            if (el('statAvg'))    el('statAvg').textContent    = avg + ' ⭐';
+            if (el('stat5Star'))  el('stat5Star').textContent  = state.filter(f=>f.rating===5).length;
+
+            // Hide submit button for staff
+            if (!PermissionUtils.isClient()) document.getElementById('submitFbBtn')?.classList.add('d-none');
+        }, 100);
+    };
+    </script>
+</body>
+</html>

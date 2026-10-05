@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Invoices and billing management – AdFlow Enterprise">
+    <title>Invoices & Billing • AdFlow Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../shared/styles/typography.css">
+    <link rel="stylesheet" href="../../shared/styles/layout.css">
+    <link rel="stylesheet" href="../../shared/styles/components.css">
+    <link rel="stylesheet" href="../../shared/styles/utilities.css">
+    <link rel="stylesheet" href="../../shared/styles/responsive.css">
+    <link rel="stylesheet" href="../../features/invoices/invoices.css">
+</head>
+<body>
+    <header class="app-header" id="app-header"></header>
+    <div class="app-container">
+        <aside class="app-sidebar" id="app-sidebar"></aside>
+        <main class="content-area">
+
+            <div class="page-header">
+                <div class="page-title">
+                    <h2>💳 Invoices & Billing</h2>
+                    <p>Generate, track, and manage client invoices with VAT 8%</p>
+                </div>
+                <div class="page-header-actions" id="headerActions">
+                    <button class="btn btn-primary" onclick="InvoiceForm.open()">+ Create Invoice</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:24px">
+                <div class="stat-card blue"   style="padding:20px"><div class="stat-icon">💳</div><div class="stat-title">Total Invoices</div><div class="stat-value" id="statCount">—</div></div>
+                <div class="stat-card green"  style="padding:20px"><div class="stat-icon">💰</div><div class="stat-title">Revenue (Paid)</div><div class="stat-value" id="statRevenue" style="font-size:1.3rem">—</div></div>
+                <div class="stat-card amber"  style="padding:20px"><div class="stat-icon">⏳</div><div class="stat-title">Outstanding</div><div class="stat-value" id="statOutstanding" style="font-size:1.3rem">—</div></div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="form-control search-input" placeholder="Client, invoice #..." oninput="loadInvoices()">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select id="filterStatus" class="form-control" onchange="loadInvoices()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="DRAFT">Draft</option>
+                        <option value="SENT">Sent</option>
+                        <option value="PAID">Paid</option>
+                        <option value="OVERDUE">Overdue</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead><tr>
+                            <th>Invoice #</th>
+                            <th>Client</th>
+                            <th>Campaign</th>
+                            <th>Total (LKR)</th>
+                            <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr></thead>
+                        <tbody id="invoiceTableBody">
+                            <tr><td colspan="8" style="text-align:center;padding:40px">
+                                <div class="spinner" style="margin:0 auto"></div>
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Invoice Form Modal -->
+    <div class="modal-overlay" id="invoiceModal">
+        <div class="modal-content modal-xl">
+            <div class="modal-header">
+                <h3 class="modal-title">Create Invoice</h3>
+                <button class="modal-close" onclick="Modal.close('invoiceModal')">×</button>
+            </div>
+            <div id="invoiceModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="detailModalTitle">Invoice Details</h3>
+                <button class="modal-close" onclick="Modal.close('detailModal')">×</button>
+            </div>
+            <div id="detailModalBody"></div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="../../shared/api/api-config.js"></script>
+    <script src="../../shared/api/api-client.js"></script>
+    <script src="../../shared/utils/storage-utils.js"></script>
+    <script src="../../shared/utils/format-utils.js"></script>
+    <script src="../../shared/utils/date-utils.js"></script>
+    <script src="../../shared/utils/validation-utils.js"></script>
+    <script src="../../shared/utils/permission-utils.js"></script>
+    <script src="../../shared/components/toast.js"></script>
+    <script src="../../shared/components/modal.js"></script>
+    <script src="../../shared/components/loader.js"></script>
+    <script src="../../shared/components/confirmation.js"></script>
+    <script src="../../shared/components/table.js"></script>
+    <script src="../../shared/components/navbar.js"></script>
+    <script src="../../shared/components/sidebar.js"></script>
+    <script src="../../features/invoices/invoices-api.js"></script>
+    <script src="../../features/invoices/invoice-calculator.js"></script>
+    <script src="../../features/invoices/invoice-form.js"></script>
+    <script src="../../features/invoices/invoices.js"></script>
+    <script>
+    // Hide create button for clients
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            if (PermissionUtils.isClient()) document.querySelector('#headerActions')?.remove();
+        }, 200);
+    });
+    </script>
+</body>
+</html>

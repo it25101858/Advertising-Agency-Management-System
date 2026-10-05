@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage client appointments – AdFlow Enterprise">
+    <title>Appointments • AdFlow Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/styles/variables.css">
+    <link rel="stylesheet" href="../../shared/styles/reset.css">
+    <link rel="stylesheet" href="../../shared/styles/typography.css">
+    <link rel="stylesheet" href="../../shared/styles/layout.css">
+    <link rel="stylesheet" href="../../shared/styles/components.css">
+    <link rel="stylesheet" href="../../shared/styles/utilities.css">
+    <link rel="stylesheet" href="../../shared/styles/responsive.css">
+    <link rel="stylesheet" href="../../features/appointments/appointments.css">
+</head>
+<body>
+    <header class="app-header" id="app-header"></header>
+    <div class="app-container">
+        <aside class="app-sidebar" id="app-sidebar"></aside>
+        <main class="content-area">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-title">
+                    <h2>📅 Appointments</h2>
+                    <p>Schedule and manage client meetings & consultations</p>
+                </div>
+                <div class="page-header-actions" id="headerActions">
+                    <button class="btn btn-primary" id="bookBtn" onclick="AppointmentForm.open()">+ Book Appointment</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:24px">
+                <div class="stat-card blue" style="padding:20px">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-title">Total</div>
+                    <div class="stat-value" id="statTotal">—</div>
+                </div>
+                <div class="stat-card green" style="padding:20px">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-title">Completed</div>
+                    <div class="stat-value" id="statCompleted">—</div>
+                </div>
+                <div class="stat-card amber" style="padding:20px">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-title">Scheduled</div>
+                    <div class="stat-value" id="statScheduled">—</div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="form-control search-input"
+                               placeholder="Client, campaign..." oninput="loadAppointments()">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Date</label>
+                    <input type="date" id="filterDate" class="form-control" onchange="loadAppointments()">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select id="filterStatus" class="form-control" onchange="loadAppointments()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="SCHEDULED">Scheduled</option>
+                        <option value="COMPLETED">Completed</option>
+                        <option value="CANCELLED">Cancelled</option>
+                        <option value="RESCHEDULED">Rescheduled</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="min-width:unset;flex:0">
+                    <label class="filter-label">&nbsp;</label>
+                    <button class="btn btn-ghost" onclick="resetFilters()">↺ Reset</button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <span class="table-title">📋 Appointments</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Client</th>
+                                <th>Staff</th>
+                                <th>Campaign</th>
+                                <th>Date & Time</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apptTableBody">
+                            <tr><td colspan="8" style="text-align:center;padding:40px">
+                                <div class="spinner" style="margin:0 auto"></div>
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Book/Edit Appointment Modal -->
+    <div class="modal-overlay" id="apptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="apptModalTitle">Book New Appointment</h3>
+                <button class="modal-close" onclick="Modal.close('apptModal')">×</button>
+            </div>
+            <div id="apptModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">✉ Send Message to Client</h3>
+                <button class="modal-close" onclick="Modal.close('messageModal')">×</button>
+            </div>
+            <form onsubmit="sendMessage(event)">
+                <input type="hidden" id="msgApptId">
+                <div class="form-group">
+                    <label class="form-label">Client</label>
+                    <input type="text" id="msgClient" class="form-control" readonly style="background:var(--bg-page)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Appointment</label>
+                    <input type="text" id="msgAppt" class="form-control" readonly style="background:var(--bg-page)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Reason <span class="required">*</span></label>
+                    <select id="msgReason" class="form-control" required>
+                        <option value="">Select reason...</option>
+                        <option value="CONFIRM">Confirmation</option>
+                        <option value="RESCHEDULE">Reschedule Request</option>
+                        <option value="REMINDER">Reminder</option>
+                        <option value="CANCEL">Cancellation Notice</option>
+                        <option value="GENERAL">General Update</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message <span class="required">*</span></label>
+                    <textarea id="msgText" class="form-control" rows="4" placeholder="Type your message to the client..." minlength="10" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-ghost" onclick="Modal.close('messageModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">✉ Send Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="../../shared/api/api-config.js"></script>
+    <script src="../../shared/api/api-client.js"></script>
+    <script src="../../shared/utils/storage-utils.js"></script>
+    <script src="../../shared/utils/format-utils.js"></script>
+    <script src="../../shared/utils/date-utils.js"></script>
+    <script src="../../shared/utils/validation-utils.js"></script>
+    <script src="../../shared/utils/permission-utils.js"></script>
+    <script src="../../shared/components/toast.js"></script>
+    <script src="../../shared/components/modal.js"></script>
+    <script src="../../shared/components/loader.js"></script>
+    <script src="../../shared/components/confirmation.js"></script>
+    <script src="../../shared/components/table.js"></script>
+    <script src="../../shared/components/pagination.js"></script>
+    <script src="../../shared/components/navbar.js"></script>
+    <script src="../../shared/components/sidebar.js"></script>
+    <script src="../../features/appointments/appointments-api.js"></script>
+    <script src="../../features/appointments/appointment-validation.js"></script>
+    <script src="../../features/appointments/appointment-form.js"></script>
+    <script src="../../features/appointments/appointments.js"></script>
+    <script>
+    // Override modal title binding
+    const _apptModalTitle = document.getElementById('apptModalTitle');
+    const _origSetTitle = Modal.setTitle.bind(Modal);
+    Modal.setTitle = function(id, title) {
+        if (id === 'apptModal' && _apptModalTitle) _apptModalTitle.textContent = title;
+        else _origSetTitle(id, title);
+    };
+
+    // Stats injection after load
+    const _origLoad = window.loadAppointments;
+    window.loadAppointments = function() {
+        _origLoad?.();
+        setTimeout(() => {
+            const state = window.apptState || [];
+            const el = id => document.getElementById(id);
+            if (el('statTotal'))     el('statTotal').textContent     = state.length;
+            if (el('statCompleted')) el('statCompleted').textContent = state.filter(a=>a.status==='COMPLETED').length;
+            if (el('statScheduled')) el('statScheduled').textContent = state.filter(a=>a.status==='SCHEDULED').length;
+        }, 100);
+    };
+    </script>
+</body>
+</html>
